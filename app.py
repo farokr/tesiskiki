@@ -31,6 +31,7 @@ def eda():
             plt.xticks(rotation=45,ha='right')
             st.write(fig4)
 
+@st.cache(suppress_st_warning=True)
 def kmeans():
     st.header('K-Means')
     df_master = pd.read_csv('data_pelanggan.csv',sep=';')     
@@ -130,7 +131,7 @@ def kmeans():
      
      
      
-     
+@st.cache(suppress_st_warning=True)
 def kmodes():
     st.header('K-Modes')
     df_master = pd.read_csv('data_pelanggan.csv',sep=';')
