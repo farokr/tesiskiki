@@ -31,7 +31,6 @@ def eda():
             plt.xticks(rotation=45,ha='right')
             st.write(fig4)
 
-@st.cache(suppress_st_warning=True)
 def kmeans():
     st.header('K-Means')
     df_master = pd.read_csv('data_pelanggan.csv',sep=';')     
@@ -98,7 +97,7 @@ def kmeans():
     k_value  = st.slider('Nilai K', min_value=3, max_value=10, step=1, value=4)
     
 
-    model = KMeans(n_clusters=k_value) # isnisialisasi Kmeans dgn  nilai K yg dipilih
+    model = KMeans(n_clusters=k_value,random_state=101) # isnisialisasi Kmeans dgn  nilai K yg dipilih
     label = model.fit_predict(df1) #proses Clustering
     pca = PCA(2) #mengubah menajdi 2 kolom
     dfnp = pca.fit_transform(df1) #Transform data
@@ -131,7 +130,7 @@ def kmeans():
      
      
      
-@st.cache(suppress_st_warning=True)
+
 def kmodes():
     st.header('K-Modes')
     df_master = pd.read_csv('data_pelanggan.csv',sep=';')
@@ -180,7 +179,7 @@ def kmodes():
     st.header('K-Modes Modelling')
     
     k_value  = st.slider('Nilai K', min_value=3, max_value=10, step=1, value=4)
-    model = KModes(n_clusters=k_value, init = "Cao", n_init = 1, verbose=1)# isnisialisasi Kmodes dgn  nilai K yg dipilih
+    model = KModes(n_clusters=k_value, init = "Cao", n_init = 1, verbose=1,random_state=101)# isnisialisasi Kmodes dgn  nilai K yg dipilih
     label = model.fit_predict(X) #proses Clustering
     
     
