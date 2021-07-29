@@ -183,11 +183,11 @@ def apps():
         df['x1'] = df1[:,0]
         df['y1'] = df1[:,1]
         df['cluster'] = label
-        #st.write('Proses Dimulai...')
+        st.write('Proses Dimulai...')
        # for index, row in df.iterrows():
             #st.write(str(row['NO'])+'... cluster: ',str(row['cluster']))
         #st.write('Proses Selesai')
-        st.dataframe(df)
+        
         
         fig3= plt.figure()
         sns.scatterplot(x='x1', y='y1',hue='cluster',data=df,alpha=1, s=40, palette='deep')
@@ -198,6 +198,9 @@ def apps():
         fig4= plt.figure()
         sns.countplot(x ='cluster', data=df)
         st.write(fig4)
+        
+        st.write('Proses Selesai')
+        st.dataframe(df)
         
         st.markdown(get_table_download_link(df), unsafe_allow_html=True)
         
