@@ -15,16 +15,23 @@ from sklearn import metrics
 #import pickle
 import base64
 
+import io
+
 column = ['aging', 'subscribe', 'order', 'Tagihan']
 
 
 def get_table_download_link(df):
-    csv = df.to_csv(index=False,sep=';')
-    b64 = base64.b64encode(csv.encode()).decode()
-    new_filename = "datahasil.csv"
-    href = f'<a href="data:file/csv;base64,{b64}" download="{new_filename}">Download file hasil clustering</a>'
+    towrite = io.BytesIO()
+    df.to_excel(towrite, encoding='utf-8', index=False, header=True, engine='xlsxwriter')
+    towrite.seek(0)  # reset pointer
+    #csv = df.to_csv(index=False,sep=';')
+    b64 = base64.b64encode(towrite.read()).decode()
+    new_filename = "datahasil.xlsx"
+    href= f'<a href="data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64,{b64}" download="{new_filename}">Download file hasil clustering</a>'
+
+    #href = f'<a href="data:file/csv;base64,{b64}" download="{new_filename}">Download file hasil clustering</a>'
     return href
-#end of proses_data
+#end of get_table_download_link
     
     
 def eda():
@@ -136,7 +143,12 @@ def kmeans():
     st.write(fig3)
     
     fig4= plt.figure()
-    sns.countplot(x ='cluster', data=df_master)
+    ax = sns.countplot(x ='cluster', data=df_master)
+    for p in ax.patches:
+        _x = p.get_x() + p.get_width() / 2
+        _y = p.get_y() + p.get_height()
+        value = int(p.get_height())
+        ax.text(_x, _y, value, ha="center")  
     st.write(fig4)
     
     cluster = df_master['cluster'].unique()
@@ -184,10 +196,12 @@ def apps():
         df['y1'] = df1[:,1]
         df['cluster'] = label
         st.write('Proses Dimulai...')
-       # for index, row in df.iterrows():
-            #st.write(str(row['NO'])+'... cluster: ',str(row['cluster']))
-        #st.write('Proses Selesai')
+        for index, row in df.iterrows():
+            st.write(str(row['No'])+'... cluster: ',str(row['cluster']))
+        st.write('Proses Selesai')
         
+        st.subheader('Data Hasil Kluster')
+        st.dataframe(df)
         
         fig3= plt.figure()
         sns.scatterplot(x='x1', y='y1',hue='cluster',data=df,alpha=1, s=40, palette='deep')
@@ -196,11 +210,13 @@ def apps():
         st.write(fig3)
 
         fig4= plt.figure()
-        sns.countplot(x ='cluster', data=df)
+        ax = sns.countplot(x ='cluster', data=df)
+        for p in ax.patches:
+            _x = p.get_x() + p.get_width() / 2
+            _y = p.get_y() + p.get_height()
+            value = int(p.get_height())
+            ax.text(_x, _y, value, ha="center") 
         st.write(fig4)
-        
-        st.write('Proses Selesai')
-        st.dataframe(df)
         
         st.markdown(get_table_download_link(df), unsafe_allow_html=True)
         
