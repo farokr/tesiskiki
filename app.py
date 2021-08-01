@@ -44,11 +44,13 @@ def eda():
     
     if st.checkbox("Show Columns Histogram"):
         selected_columns = st.selectbox("Select Column",column)
-        if selected_columns != '':
-            fig4= plt.figure()
+        fig4= plt.figure()
+        if selected_columns == 'Tagihan':
+            sns.histplot(x = selected_columns, data=df,bins=15)
+        elif selected_columns != '':
             sns.histplot(x = selected_columns, data=df)
-            plt.xticks(rotation=45,ha='right')
-            st.write(fig4)
+        plt.xticks(rotation=45,ha='right')
+        st.write(fig4)
 
 def kmeans():
     st.header('K-Means')
