@@ -39,7 +39,7 @@ def eda():
     df = pd.read_csv('data_pelanggan.csv',sep=';')
     
     st.subheader('Data Awal '+str(df.shape))
-    st.write(df.sample(10));
+    st.write(df);
 
     
     if st.checkbox("Show Columns Histogram"):
